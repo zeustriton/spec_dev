@@ -1,0 +1,9 @@
+dji.entidad.gob.pe {
+    reverse_proxy localhost:3000
+    encode gzip
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Frame-Options "DENY"
+        X-Content-Type-Options "nosniff"
+    }
+}
