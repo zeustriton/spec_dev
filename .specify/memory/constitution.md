@@ -1,25 +1,21 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: 1.0.0 → 1.1.0 (MINOR — gobernanza expandida, lenguaje de principios fortalecido a MUST/SHOULD)
+Version change: 1.1.0 → 1.2.0 (MINOR — Principio VII de seguridad añadido + Stack Tecnológico documentado)
 
 Principios modificados:
-  - I. Preventivo sobre reactivo: redactado en términos declarativos (MUST)
-  - II. Registro dinámico: reforzado con restricción explícita (MUST NOT)
-  - III. Alertas escalonadas: sin cambio (ya era NON-NEGOTIABLE)
-  - IV. Trazabilidad y evidencia: añadido requisito de inmutabilidad de logs
-  - V. Bajo costo y sostenibilidad: añadido listado de herramientas preferentes
-  - VI. Simplicidad de implementación: reforzado con criterio de mantenibilidad
+  - V. Bajo costo y sostenibilidad: referencia cruzada al Stack Tecnológico añadida
+  - Gobernanza: Principios VII ahora listado como no-negociable junto con I, II y III
 
 Secciones añadidas:
-  - Procedimiento de enmienda en Gobernanza
-  - Política de versionado
-  - Revisión de cumplimiento
+  - Principio VII: Seguridad por diseño (OWASP Top 10 + OWASP AI)
+  - Stack Tecnológico Mandatorio (sección nueva entre Módulos e Indicadores)
 
 Templates verificados:
-  ✅ .specify/templates/plan-template.md — Constitution Check genérico, compatible
-  ✅ .specify/templates/spec-template.md — estructura de requisitos compatible con principios
-  ✅ .specify/templates/tasks-template.md — estructura de fases compatible
+  ✅ .specify/templates/plan-template.md — Constitution Check compatible; debe incluir
+     checklist OWASP en cada plan
+  ✅ .specify/templates/spec-template.md — estructura de requisitos compatible
+  ✅ .specify/templates/tasks-template.md — fase de Polish incluye "Security hardening"
 
 TODOs diferidos:
   - NINGUNO
@@ -96,16 +92,15 @@ gubernamental y toma de decisiones de la Alta Dirección.
 
 ### V. Bajo costo y sostenibilidad
 
-La implementación MUST basarse prioritariamente en herramientas ya disponibles en la
-entidad. Orden de preferencia:
+La implementación MUST basarse en el stack tecnológico mandatorio definido en la sección
+"Stack Tecnológico Mandatorio" de esta constitución. Todas las herramientas del stack
+son open source o de licencia incluida en el entorno de despliegue.
 
-1. Microsoft 365 (Outlook, Power Automate, SharePoint, Teams)
-2. Google Workspace (Gmail, Google Sheets, Apps Script)
-3. Sistemas internos existentes de la entidad
-4. Herramientas open source sin costo de licencia
-
-El sistema MUST NOT introducir dependencias de software con costo de licencia recurrente
+El sistema MUST NOT introducir dependencias con costo de licencia recurrente adicional
 sin aprobación formal de la Alta Dirección.
+
+**Rationale**: Garantizar que el sistema sea mantenible a largo plazo sin depender de
+presupuesto variable o herramientas externas a la entidad.
 
 ### VI. Simplicidad de implementación
 
@@ -114,6 +109,109 @@ Integridad Institucional sin requerir conocimientos de programación avanzada.
 
 Ante dos soluciones equivalentes en funcionalidad, MUST elegirse la de menor complejidad
 operativa. La complejidad MUST justificarse explícitamente en el plan de implementación.
+
+### VII. Seguridad por diseño (NON-NEGOTIABLE)
+
+Todo desarrollo MUST cumplir con los estándares de seguridad definidos por:
+
+- **OWASP Top 10** (https://owasp.org/www-project-top-ten/) — controles obligatorios:
+  - **A01 Broken Access Control**: El sistema MUST implementar control de acceso basado
+    en roles (RBAC) con los tres roles definidos (administrador pleno, operador de
+    lectura, Alta Dirección). Ningún usuario MUST acceder a datos o funciones fuera
+    de su rol.
+  - **A02 Cryptographic Failures**: Los datos sensibles de servidores públicos (nombre,
+    DNI, cargo) MUST estar protegidos en tránsito (HTTPS/TLS) y en reposo según las
+    capacidades del stack.
+  - **A03 Injection**: Toda entrada de usuario MUST ser validada y sanitizada. El ORM
+    (Prisma) MUST usarse para todas las consultas a base de datos; MUST NOT construirse
+    queries SQL crudas con datos de usuario.
+  - **A05 Security Misconfiguration**: Las variables de entorno sensibles (secretos,
+    credenciales) MUST NOT incluirse en el repositorio de código.
+  - **A07 Identification and Authentication Failures**: La autenticación MUST delegarse
+    a NextAuth.js con cuenta institucional; MUST NOT implementarse sistemas de
+    autenticación propios.
+  - **A09 Security Logging and Monitoring Failures**: Todos los eventos de acceso,
+    modificación de datos y emisión de alertas MUST registrarse (ver Principio IV).
+
+- **OWASP AI Security** (https://owaspai.org/) — controles aplicables al uso del
+  agente GLM en la construcción y operación del sistema:
+  - **LLM01 Prompt Injection**: El código generado por el agente de IA MUST ser
+    revisado antes de integrarse; MUST NOT ejecutarse directamente sin validación humana.
+  - **LLM06 Sensitive Information Disclosure**: El agente de IA MUST NOT recibir datos
+    reales de servidores públicos (nombres, DNI, correos) durante el desarrollo o pruebas;
+    MUST usarse datos sintéticos.
+  - **LLM08 Excessive Agency**: El agente de IA MUST NOT tener acceso directo a la
+    base de datos de producción ni a los canales de envío de alertas reales.
+
+**Rationale**: El sistema maneja datos personales de servidores públicos y genera
+evidencia para órganos de control. Una brecha de seguridad comprometería la integridad
+institucional que el sistema busca fortalecer.
+
+## Stack Tecnológico Mandatorio
+
+El sistema MUST construirse sobre el siguiente stack. Cualquier sustitución de componente
+MUST ser aprobada como enmienda a esta constitución.
+
+### Framework & Lenguaje
+
+| Tecnología | Versión | Rol |
+|------------|---------|-----|
+| Next.js | 16 (App Router) | Framework full-stack |
+| TypeScript | 5 | Lenguaje principal |
+| Bun | Latest | Runtime y package manager |
+
+### UI & Estilos
+
+| Tecnología | Versión | Rol |
+|------------|---------|-----|
+| Tailwind CSS | 4 | Framework de estilos |
+| shadcn/ui | New York style | Biblioteca de componentes |
+| Lucide Icons | Latest | Iconografía |
+| Framer Motion | Latest | Animaciones y transiciones |
+| next-themes | Latest | Soporte claro/oscuro |
+
+### Base de Datos & ORM
+
+| Tecnología | Versión | Rol |
+|------------|---------|-----|
+| Prisma ORM | Latest | Mapeo objeto-relacional |
+| SQLite | — | Base de datos embebida (archivo local en `/db`) |
+
+### Autenticación
+
+| Tecnología | Versión | Rol |
+|------------|---------|-----|
+| NextAuth.js | v4 | Autenticación con cuenta institucional |
+
+### Estado & Datos
+
+| Tecnología | Versión | Rol |
+|------------|---------|-----|
+| Zustand | Latest | Estado del cliente |
+| TanStack Query | Latest | Estado del servidor y caché |
+
+### Tiempo Real & Infraestructura
+
+| Tecnología | Rol |
+|------------|-----|
+| Socket.io | Comunicación WebSocket para actualizaciones en tiempo real |
+| Caddy | Gateway, enrutamiento y proxy inverso |
+
+### Capacidades de Generación de Documentos
+
+| Formato | Uso en este sistema |
+|---------|---------------------|
+| XLSX | Exportación de reportes de cumplimiento |
+| PDF | Informes para Alta Dirección y órganos de control |
+
+### Decisiones de arquitectura mandatorias
+
+- Patrón: Server Components + Client Components (React)
+- APIs: API Routes (backend en servidor); MUST NOT usarse Server Actions para lógica
+  de negocio crítica
+- Base de datos: archivo SQLite local en `/db`
+- Diseño: Mobile-first, responsive
+- Tema: Soporte claro/oscuro obligatorio
 
 ## Módulos del Sistema
 
@@ -138,6 +236,8 @@ operativa. La complejidad MUST justificarse explícitamente en el plan de implem
 - Ley N.° 31227 — Ley de Declaración Jurada de Intereses
 - Disposiciones de la Contraloría General de la República sobre DJI
 - Normativa de transparencia y prevención de conflictos de intereses aplicable a la entidad
+- OWASP Top 10 — estándar de seguridad para aplicaciones web
+- OWASP AI Security Top 10 — estándar de seguridad para sistemas con IA
 
 ## Gobernanza
 
@@ -150,9 +250,14 @@ la constitución prevalece.
 ### Procedimiento de enmienda
 
 1. Cualquier cambio a un principio MUST ser propuesto como enmienda formal con justificación escrita.
-2. Los Principios I, II y III son no-negociables; su modificación requiere aprobación del responsable de la Oficina de Integridad Institucional y documentación del impacto normativo.
+2. Los Principios I, II, III y VII son no-negociables; su modificación requiere aprobación
+   del responsable de la Oficina de Integridad Institucional y documentación del impacto
+   normativo y de seguridad.
 3. Los Principios IV, V y VI pueden enmendarse con justificación técnica documentada.
-4. Toda enmienda aprobada MUST incrementar la versión de la constitución según la política de versionado.
+4. El Stack Tecnológico Mandatorio puede enmendarse con justificación técnica; cada
+   sustitución de componente MUST evaluarse contra los controles OWASP del Principio VII.
+5. Toda enmienda aprobada MUST incrementar la versión de la constitución según la
+   política de versionado.
 
 ### Política de versionado (Semántico)
 
@@ -163,6 +268,7 @@ la constitución prevalece.
 ### Revisión de cumplimiento
 
 Todo plan de implementación MUST incluir una sección "Constitution Check" que verifique
-explícitamente el cumplimiento de cada principio antes de comenzar la implementación.
+explícitamente el cumplimiento de cada principio, incluyendo el checklist de controles
+OWASP del Principio VII, antes de comenzar la implementación.
 
-**Version**: 1.1.0 | **Ratificada**: 2026-06-19 | **Última enmienda**: 2026-06-19
+**Version**: 1.2.0 | **Ratificada**: 2026-06-19 | **Última enmienda**: 2026-06-19
