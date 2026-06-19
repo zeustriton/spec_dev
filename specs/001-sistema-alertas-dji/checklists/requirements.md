@@ -31,6 +31,7 @@
 
 ## Notes
 
-- Todos los ítems pasan. La especificación está lista para `/speckit-clarify` o `/speckit-plan`.
+- Todos los ítems pasan. La especificación está lista para `/speckit-plan`.
+- 3 clarificaciones integradas en sesión 2026-06-19: mecanismo de registro de presentación (FR-005a), roles de acceso (FR-016, FR-017), tipos de obligación fijos por Ley N.° 31227.
 - WhatsApp Business marcado como opcional en v1 (ver Assumptions); si la entidad lo requiere en v1, revisar FR-015.
 - El tablero "tiempo real" aclarado en Assumptions como semi-estático en v1.

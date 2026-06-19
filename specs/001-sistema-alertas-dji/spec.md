@@ -197,6 +197,7 @@ nivel jerárquico, y que se actualiza al registrar cambios.
 
 - Q: ¿Cómo se registra en el sistema que un sujeto obligado presentó su DJI? → A: El administrador lo registra manualmente (ingresa fecha de presentación por cada sujeto).
 - Q: ¿Cómo se controla el acceso al módulo administrativo del sistema? → A: Roles diferenciados: administrador pleno (gestiona registro y alertas), operador de lectura (ve tablero), alta dirección (solo reportes).
+- Q: ¿Cuáles son los tipos de obligación DJI que maneja el sistema? → A: Tres tipos fijos según Ley N.° 31227: Declaración de Inicio de cargo, Declaración Anual, Declaración de Cese de cargo.
 
 ---
 
@@ -252,10 +253,12 @@ nivel jerárquico, y que se actualiza al registrar cambios.
 
 - **Sujeto Obligado**: Servidor público con obligación de presentar DJI. Atributos:
   nombre, DNI, cargo, unidad orgánica, nivel jerárquico, jefe inmediato, estado (activo/
-  inactivo), tipo de obligación, fecha de vencimiento, correo institucional.
-- **Obligación DJI**: Instancia de obligación de un sujeto en un periodo. Atributos:
-  tipo, fecha de vencimiento, estado (pendiente/presentado en plazo/presentado con
-  retraso/omiso), fecha de presentación (si aplica).
+  inactivo), tipo(s) de obligación activos, correo institucional.
+- **Obligación DJI**: Instancia de obligación de un sujeto para un tipo y periodo
+  específico. Tipo: uno de los tres fijos establecidos por la Ley N.° 31227 —
+  **Inicio de cargo**, **Anual**, **Cese de cargo**. Atributos adicionales: fecha de
+  vencimiento, estado (pendiente / presentado en plazo / presentado con retraso / omiso),
+  fecha de presentación registrada por el administrador (si aplica).
 - **Alerta**: Notificación emitida. Atributos: tipo (1/2/3/incumplimiento), destinatarios,
   canal, timestamp de envío, estado de entrega, sujeto asociado, obligación asociada.
 - **Log de Auditoría**: Registro inmutable de eventos del sistema. Atributos: tipo de
