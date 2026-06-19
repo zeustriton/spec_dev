@@ -196,6 +196,7 @@ nivel jerárquico, y que se actualiza al registrar cambios.
 ### Session 2026-06-19
 
 - Q: ¿Cómo se registra en el sistema que un sujeto obligado presentó su DJI? → A: El administrador lo registra manualmente (ingresa fecha de presentación por cada sujeto).
+- Q: ¿Cómo se controla el acceso al módulo administrativo del sistema? → A: Roles diferenciados: administrador pleno (gestiona registro y alertas), operador de lectura (ve tablero), alta dirección (solo reportes).
 
 ---
 
@@ -236,6 +237,16 @@ nivel jerárquico, y que se actualiza al registrar cambios.
   actualizando el estado del sujeto a "presentado con retraso".
 - **FR-015**: El canal de envío de alertas (correo, WhatsApp Business u otro disponible
   en la entidad) MUST ser configurable sin modificar el calendario de alertas.
+- **FR-016**: El sistema MUST implementar tres roles de acceso diferenciados:
+  - **Administrador pleno**: puede gestionar el registro de sujetos obligados, registrar
+    presentaciones y regularizaciones, configurar el sistema y ver todos los módulos.
+  - **Operador de lectura**: acceso de solo lectura al tablero de control e indicadores;
+    no puede modificar registros ni configurar el sistema.
+  - **Alta Dirección**: acceso exclusivo a reportes exportables e indicadores agregados;
+    no puede ver datos individuales de servidores.
+- **FR-017**: El sistema MUST controlar el acceso mediante autenticación con cuenta
+  institucional existente (correo de dominio de la entidad); no gestiona credenciales
+  propias.
 
 ### Key Entities
 
