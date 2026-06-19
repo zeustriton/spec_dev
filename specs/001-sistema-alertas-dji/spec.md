@@ -191,6 +191,14 @@ nivel jerárquico, y que se actualiza al registrar cambios.
 
 ---
 
+## Clarifications
+
+### Session 2026-06-19
+
+- Q: ¿Cómo se registra en el sistema que un sujeto obligado presentó su DJI? → A: El administrador lo registra manualmente (ingresa fecha de presentación por cada sujeto).
+
+---
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
@@ -203,8 +211,11 @@ nivel jerárquico, y que se actualiza al registrar cambios.
   del vencimiento, con copia al jefe inmediato del sujeto.
 - **FR-004**: El sistema MUST enviar la alerta de incumplimiento al día siguiente del
   vencimiento si no existe registro de presentación de DJI.
-- **FR-005**: El sistema MUST NOT enviar alertas a sujetos que ya registraron la
-  presentación de su DJI para el periodo vigente.
+- **FR-005**: El sistema MUST NOT enviar alertas a sujetos cuya presentación de DJI
+  haya sido registrada manualmente por el administrador para el periodo vigente.
+- **FR-005a**: El administrador MUST poder registrar la fecha de presentación de DJI
+  de un sujeto obligado de forma individual; el sistema detiene el ciclo de alertas
+  activo para ese sujeto en ese periodo inmediatamente tras el registro.
 - **FR-006**: El sistema MUST registrar en log de auditoría inmutable cada alerta
   emitida, con timestamp, destinatario y tipo de alerta.
 - **FR-007**: El sistema MUST permitir al administrador registrar altas, bajas y
